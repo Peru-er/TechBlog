@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Контакти{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h1>Контакти</h1>
+
+    <p>📧 Email: techblog@gmail.com</p>
+
+    <p>📞 Телефон: +380 99 123 45 67</p>
+
+    <p>📍 Адреса: Київ, Україна</p>
+
+    <img
+        src="{% static 'images/office.jpg' %}"
+        alt="Офіс"
+        class="img-fluid rounded shadow"
+    >
+
+</div>
+{% endblock %}

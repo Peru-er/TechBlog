@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+{{ blog_name }} - Створення продукту
+{% endblock %}
+
+
+{% block content %}
+
+<div class="product-wrapper">
+    <div class="product-wrapper--title">
+        <h2>Продукти</h2>
+    </div>
+    {% if product %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            Новий продукт
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ product.price }}</h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ product.stock }}</h6>
+            <!--            <a href="{% url 'product_detail' product.id %}" class="card-link">Детальніше</a>-->
+            <a href="#" class="card-link">Детальніше</a>
+            <a href="#" class="card-link">Купити</a>
+        </div>
+    </div>
+    {% endif %}
+    {% if products %}
+    {% for product in products %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ product.price }}</h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ product.stock }}</h6>
+            <a href="#" class="card-link">Детальніше</a>
+            <a href="#" class="card-link">Купити</a>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+            <h2>Покіщо продуктів немає</h2>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="main_wrapper">
+    <form class="product_form" action="{% url 'products' %}" method="post">
+        {% csrf_token%}
+        {{ create_product_form.as_table }}
+        <button type="submit">Create Product</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        type="application/json"></script>
+
+{% endblock %}

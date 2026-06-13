@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EXAMPLE JINJA</title>
+</head>
+<body>
+
+*<!-- Проста змінна -->*
+<h1>{{ blog_name }}</h1>
+
+*<!-- Доступ до атрибутів об'єкта -->*
+<p>{{ user.username }}</p>
+
+*<!-- Доступ до елементів списку -->*
+<p>{{ posts.0.title }}</p>
+
+
+
+{% if years >= 18 %}
+    <p>Ти повнолітній</p>
+{% elif years >= 13 %}
+    <p>Ти підліток</p>
+{% else %}
+    <p>Ти дитина</p>
+{% endif %}
+
+
+{% for post in posts %}
+    <div class="post">
+        <h3>{{ post.title }}</h3>
+        <p>Стаття #{{ forloop.counter }}</p>
+
+        {% if forloop.first %}
+            <span class="badge">Найпопулярніша!</span>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>Статей поки немає</p>
+{% endfor %}
+
+
+
+<!--Корисні змінні в циклах:-->
+
+<!--forloop.counter — номер ітерації (1, 2, 3...)-->
+<!--forloop.counter0 — номер ітерації (0, 1, 2...)-->
+<!--forloop.first — чи це перша ітерація?-->
+<!--forloop.last — чи це остання ітерація?-->
+
+
+*<!-- URL-генерація -->*
+<a href="{% url 'home' %}">Головна</a>
+<!--<a href="/polls/hello">Головна</a>-->
+<a href="{% url 'post_detail' post.id %}">Детальніше</a>
+
+*<!-- CSRF токен для форм -->*
+<form method="post">
+    {% csrf_token %}
+    *<!-- поля форми -->*
+</form>
+
+*<!-- Наслідування шаблонів -->*
+{% extends 'base.html' %}
+{% block content %}Контент{% endblock %}
+
+*<!-- Включення інших шаблонів -->*
+{% include 'components/sidebar.html' %}
+
+
+*<!-- Довжина списку -->*
+<p>Всього статей: {{ posts|length }}</p>
+
+*<!-- Форматування дати -->*
+<p>Опубліковано: {{ post.date|date:"d.m.Y" }}</p>
+
+*<!-- Обрізання тексту -->*
+<p>{{ post.content|truncatewords:30 }}...</p>
+
+*<!-- Заглавні літери -->*
+<h1>{{ title|title }}</h1>
+
+*<!-- Значення за замовчуванням -->*
+<p>{{ user.bio|default:"Біографія не вказана"|truncatewords:30 }}</p>
+
+*<!-- Математичні операції -->*
+<p>Через рік тобі буде {{ age|add:1 }}</p>
+
+*<!-- Перевірка на ділення -->*
+{% if number|divisibleby:2 %}
+    <p>Парне число</p>
+{% endif %}
+
+*<!-- Об'єднання фільтрів -->*
+<p>{{ text|lower|capfirst }}</p>
+
+
+
+BASE TMMPLATE
+
+<!--&lt;!&ndash; base.html &ndash;&gt;-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="uk">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+
+<!--    &lt;!&ndash; Заголовок сторінки &ndash;&gt;-->
+<!--    <title>{% block title %}Мій сайт{% endblock %}</title>-->
+
+
+<!--    &lt;!&ndash; Додаткові CSS з дочірніх шаблонів &ndash;&gt;-->
+<!--    {% block extra_css %}{% endblock %}-->
+<!--</head>-->
+<!--<body>-->
+
+
+<!--    &lt;!&ndash; Шапка сайту &ndash;&gt;-->
+<!--    <header>-->
+<!--        {% block header %}-->
+<!--            <h1>Стандартний заголовок</h1>-->
+<!--        {% endblock %}-->
+<!--    </header>-->
+<!--    -->
+<!--    &lt;!&ndash; Основний контент &ndash;&gt;-->
+<!--    <main>-->
+<!--        {% block content %}-->
+<!--        {% endblock %}-->
+<!--    </main>-->
+<!--    -->
+<!--    &lt;!&ndash; Футер &ndash;&gt;-->
+<!--    <footer>-->
+<!--        {% block footer %}-->
+<!--            <p>&copy; 2024 Мій сайт</p>-->
+<!--        {% endblock %}-->
+<!--    </footer>-->
+<!--    -->
+<!--    &lt;!&ndash; Додаткові JS з дочірніх шаблонів &ndash;&gt;-->
+<!--    {% block extra_js %}{% endblock %}-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--&lt;!&ndash; post_detail.html &ndash;&gt;-->
+<!--{% extends 'base.html' %}-->
+
+
+<!--{% block title %}{{ post.title }} - Мій блог{% endblock %}-->
+
+
+<!--{% block extra_css %}-->
+<!--    <style>-->
+<!--        .post-content { line-height: 1.6; }-->
+<!--    </style>-->
+<!--{% endblock %}-->
+
+
+<!--{% block content %}-->
+<!--    <article>-->
+<!--        <h1>{{ post.title }}</h1>-->
+<!--        <p class="post-meta">{{ post.date|date:"d.m.Y" }}</p>-->
+<!--        <div class="post-content">{{ post.content }}</div>-->
+<!--    </article>-->
+<!--{% endblock %}-->
+
+
+<!--{% block extra_js %}-->
+<!--    <script>-->
+<!--        console.log('Сторінка статті завантажена');-->
+<!--    </script>-->
+<!--{% endblock %}-->
+
+
+<!-- CSS файли -->
+<!--{% static 'images/name_images.jpg' %}-->
+<!--<link rel="stylesheet" href="../../static/images/name_images.jpg">-->
+
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
+<link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+
+
+<!-- JavaScript файли -->
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'blog/js/articles.js' %}"></script>
+
+
+<!-- Зображення -->
+<img src="{% static 'images/logo.png' %}" alt="TechBlog Logo">
+<img src="{% static 'blog/images/article.jpg' %}" alt="Article Image">
+
+
+<!-- Фавікон -->
+<link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+
+
+
+
+</body>
+</html>
