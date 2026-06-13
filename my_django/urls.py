@@ -22,6 +22,3 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("polls.urls"))
 ]
-
-path('polls/about/', about_view, name='about'),
-path('polls/contact/', contact_view, name='contact'),

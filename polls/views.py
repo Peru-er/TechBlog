@@ -2,16 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from polls.models import User, Product
 from polls.forms.form_example import FormProduct
-from .views import (
-    say_hello,
-    home_view,
-    check_experience,
-    popular_posts,
-    get_product,
-    products,
-    about_view,
-    contact_view
-)
+
 
 # app.get("polls/")
 
@@ -97,8 +88,6 @@ def register(request):
     if request.method == "GET":
         return render(request, "register.html", context=pre_user_data)
 
-
-
 def login(request):
     context = {}
     if request.method == "POST":
@@ -118,11 +107,6 @@ def login(request):
                 return render(request, "login.html", context=context)
     if request.method == "GET":
         return render(request, "login.html", context=context)
-
-
-
-
-
 
 def say_hello(request):
     return HttpResponse("Hello World")
